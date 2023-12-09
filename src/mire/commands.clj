@@ -19,7 +19,7 @@
         exits (keys @(:exits current-room))
         items (map #(str "There is " % " here.\n") @(:items current-room))
         inhabitants @(:inhabitants current-room)
-        players-in-room (filter #(contains? inhabitants %) (keys @player/streams))]    
+        players-in-room (map #(subs % 20) (filter #(contains? inhabitants %) (keys @player/streams)))]    
         (str room-desc
          "\nExits: " exits "\n"
          (str/join "\n" items)
