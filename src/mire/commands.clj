@@ -79,7 +79,7 @@
     (doseq [inhabitant (disj @(:inhabitants @player/*current-room*)
                              player/*name*)]
       (binding [*out* (player/streams inhabitant)]
-        (println message)
+        (println (str (subs player/*name* 20 (count player/*name*)) ":") message)
         (println player/prompt)))
     (str "You said " message)))
 
