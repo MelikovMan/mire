@@ -12,13 +12,19 @@
 ;; Command functions
 
 (defn look
-  "Get a description of the surrounding environs and its contents."
+  "Get a description of the surrounding environs and its contents, including player names."
   []
-  (str (:desc @player/*current-room*)
-       "\nExits: " (keys @(:exits @player/*current-room*)) "\n"
-       (str/join "\n" (map #(str "There is " % " here.\n")
-                           @(:items @player/*current-room*))
-        "\n Players: " (str/join ", " (keys @player/streams))))
+  (let [current-room @player/*current-room*
+        room-desc (:desc current-room)
+        exits (keys @(:exits current-room))
+        items (map #(str "There is " % " here.\n") @(:items current-room))
+        inhabitants @(:inhabitants current-room)
+        players-in-room (filter #(contains? inhabitants %) (keys @player/streams))]    
+        (str room-desc
+         "\nExits: " exits "\n"
+         (str/join "\n" items)
+         (when-not (empty? players-in-room)
+           (str "\nPlayers here: " (str/join ", " players-in-room))))))
 
 (defn move
   "\"♬ We gotta get out of this place... ♪\" Give a direction."
