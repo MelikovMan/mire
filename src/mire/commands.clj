@@ -76,8 +76,7 @@
   "Say something out loud so everyone in the room can hear."
   [& words]
   (let [message (str/join " " words)]
-    (doseq [inhabitant (disj @(:inhabitants @player/*current-room*)
-                             player/*name*)]
+    (doseq [inhabitant (disj @(:inhabitants @player/*current-room*) player/*name*)]
       (binding [*out* (player/streams inhabitant)]
         (println (str (subs player/*name* 20 (count player/*name*)) ":") message)
         (println player/prompt)))
