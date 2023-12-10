@@ -90,6 +90,17 @@
         (println player/prompt)))
     (str "You said " message)))
 
+(defn yell
+  "Say something out loud so everyone in the dungeon can hear."
+  [& words]
+  (let [message (str/join " " words)]
+    (doseq [inhabitant @player/streams]
+      (if (false? (= (first inhabitant) player/*name*))
+        (binding [*out* (player/streams (first inhabitant))]
+          (println (str (subs player/*name* 20 (count player/*name*)) ":") message)
+          (println player/prompt))))
+    (str "You yelled " message)))
+
 (defn help
   "Show available commands and what they do."
   []
@@ -110,6 +121,7 @@
                "detect" detect
                "look" look
                "say" say
+               "yell" yell
                "help" help})
 
 ;; Command handling
