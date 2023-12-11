@@ -1,12 +1,14 @@
-version: "3"
+version: "3.7"
 services:
   lein:
     image: melikovimagespuller/mire
     restart: on-failure
     network_mode: "host"
+    pull_policy: always
   bot-pl:
     depends_on:
       - lein
     image: melikovimagespuller/bot-pl
     restart: on-failure
     network_mode: "host"
+    pull_policy: always
