@@ -19,7 +19,7 @@
         exits (keys @(:exits current-room))
         items (map #(str "There is " % " here.\n") @(:items current-room))
         inhabitants @(:inhabitants current-room)
-        players-in-room (map #(subs % 20) (filter #(contains? inhabitants %) (keys @player/streams)))]
+        players-in-room (filter #(contains? inhabitants %) (keys @player/streams))]
         (str room-desc
          "\nExits: " exits "\n"
          (str/join "\n" items)
@@ -85,7 +85,7 @@
   (let [message (str/join " " words)]
     (doseq [inhabitant (disj @(:inhabitants @player/*current-room*) player/*name*)]
       (binding [*out* (player/streams inhabitant)]
-        (println (str (subs player/*name* 20 (count player/*name*)) ":") message)
+        (println (str player/*name* ":") message)
         (println player/prompt)))
     (str "You said " message)))
 
@@ -96,7 +96,7 @@
     (doseq [inhabitant @player/streams]
       (if (false? (= (first inhabitant) player/*name*))
         (binding [*out* (player/streams (first inhabitant))]
-          (println (str (subs player/*name* 20 (count player/*name*)) ":") message)
+          (println (str player/*name* ":") message)
           (println player/prompt))))
     (str "You yelled " message)))
 
