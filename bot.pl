@@ -1,3 +1,5 @@
+#!/usr/bin/env swipl
+
 :- initialization(main,main).
 :- use_module(library(socket)).
 :- use_module(library(random)).
