@@ -18,15 +18,17 @@ bot(Stream):-
     %flush_output(Stream),
     %copy_stream_data(Stream,current_output),
     format(Stream,'~s~n',"ai_boris2"),
-    %flush_output(Stream),
+    flush_output(Stream),
     %copy_stream_data(Stream,current_output),
     %read_stream(Stream,List),    %write(List),
     repeat,(
     (   maybe(1,2)->(
     maybe(1,2)->format(Stream,'~s~n',"north");format(Stream,'~s~n',"south"))
     ;(maybe(1,2)->format(Stream,'~s~n',"east");format(Stream,'~s~n',"west"))),
+        flush_output(Stream),
         sleep(10),
-        format(Stream,'~s~n',"yell NINININININININI"),fail
+        format(Stream,'~s~n',"yell NINININININININI"),
+        flush_output(Stream),fail
     ).
 read_stream(Stream,[H|T]):-
     \+(at_end_of_stream(Stream))->
