@@ -19,7 +19,7 @@
         exits (keys @(:exits current-room))
         items (map #(str "There is " % " here.\n") @(:items current-room))
         inhabitants @(:inhabitants current-room)
-        players-in-room (map #(subs % 20) (filter #(contains? inhabitants %) (keys @player/streams)))]    
+        players-in-room (map #(subs % 20) (filter #(contains? inhabitants %) (keys @player/streams)))]
         (str room-desc
          "\nExits: " exits "\n"
          (str/join "\n" items)
@@ -83,8 +83,7 @@
   "Say something out loud so everyone in the room can hear."
   [& words]
   (let [message (str/join " " words)]
-    (doseq [inhabitant (disj @(:inhabitants @player/*current-room*)
-                             player/*name*)]
+    (doseq [inhabitant (disj @(:inhabitants @player/*current-room*) player/*name*)]
       (binding [*out* (player/streams inhabitant)]
         (println (str (subs player/*name* 20 (count player/*name*)) ":") message)
         (println player/prompt)))
@@ -100,6 +99,18 @@
           (println (str (subs player/*name* 20 (count player/*name*)) ":") message)
           (println player/prompt))))
     (str "You yelled " message)))
+
+(defn whisper
+  "Say something very quiet so only target person in the room can hear."
+  [& words]
+  (let [player-target (str (first words)) message (str/join " " (rest words))]
+    (doseq [inhabitant (disj @(:inhabitants @player/*current-room*) player/*name*)]
+      (let [inhabitant-name (subs inhabitant 21 (count inhabitant))]
+        (if (true? (= player-target inhabitant-name))
+          (binding [*out* (player/streams inhabitant)]
+            (println (str (subs player/*name* 20 (count player/*name*)) "->" player-target ":") message)
+            (println player/prompt)))))
+    (str "You whispered to " player-target " " message)))
 
 (defn help
   "Show available commands and what they do."
@@ -122,7 +133,8 @@
                "look" look
                "say" say
                "yell" yell
-               "help" help})
+               "help" help
+               "whisper" whisper})
 
 ;; Command handling
 
