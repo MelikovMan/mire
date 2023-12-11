@@ -1,0 +1,37 @@
+name: Clojure CI
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - uses: DeLaGuardo/clojure-lint-action@master
+      with:
+        clj-kondo-args: --lint src test resources
+        # check-name is optional
+        check-name: Clojure linter
+        # secrets.GITHUB_TOKEN is needed here
+        # to publish annotations back to github
+        # this action is not storing or sending it anywhere
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+    
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Install dependencies
+      run: lein deps
+    - name: Run tests
+      run: lein test
+
+  
