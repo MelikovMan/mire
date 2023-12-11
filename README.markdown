@@ -34,12 +34,12 @@ Licensed under the same terms as Clojure.
 
 # Group Project
 
-
 Участники проекта:
-    1. [Меликов Роман](https://github.com/MelikovMan)
-    2. [Брезицкий Сергей](https://github.com/SergeiB2002)
-    3. [Илья Заяц](https://github.com/IlyaZayats)
-    4. [Ростислав Орлов](https://github.com/RostislavOrlov)
+
+1. [Меликов Роман](https://github.com/MelikovMan)
+2. [Брезицкий Сергей](https://github.com/SergeiB2002)
+3. [Илья Заяц](https://github.com/IlyaZayats)
+4. [Ростислав Орлов](https://github.com/RostislavOrlov)
 
 ## Расширяемый функционал
 
