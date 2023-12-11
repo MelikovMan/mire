@@ -3,6 +3,7 @@
 :- use_module(library(random)).
 
 main:-
+    sleep(15),
     client(localhost,3333).
 
 client(Host,Port):-
