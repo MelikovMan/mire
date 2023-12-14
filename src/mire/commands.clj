@@ -105,10 +105,10 @@
   [& words]
   (let [player-target (str (first words)) message (str/join " " (rest words))]
     (doseq [inhabitant (disj @(:inhabitants @player/*current-room*) player/*name*)]
-      (let [inhabitant-name (subs inhabitant 21 (count inhabitant))]
+      (let [inhabitant-name (subs inhabitant 1 (count inhabitant))]
         (if (true? (= player-target inhabitant-name))
           (binding [*out* (player/streams inhabitant)]
-            (println (str (subs player/*name* 20 (count player/*name*)) "->" player-target ":") message)
+            (println (str player/*name* "->" player-target ":") message)
             (println player/prompt)))))
     (str "You whispered to " player-target " " message)))
 
