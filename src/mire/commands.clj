@@ -105,7 +105,7 @@
   [& words]
   (let [player-target (str (first words)) message (str/join " " (rest words))]
     (doseq [inhabitant (disj @(:inhabitants @player/*current-room*) player/*name*)]
-      (let [inhabitant-name (subs inhabitant 1 (count inhabitant))]
+      (let [inhabitant-name inhabitant] ;(subs inhabitant 1 (count inhabitant))
         (if (true? (= player-target inhabitant-name))
           (binding [*out* (player/streams inhabitant)]
             (println (str player/*name* "->" player-target ":") message)
