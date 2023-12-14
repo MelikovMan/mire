@@ -15,12 +15,18 @@
             disj player/*name*)))
 
 (defn- get-unique-player-name [name]
+  (flush)
   (if (@player/streams name)
     (do (print "That name is in use; try again: ")
         (flush)
         (recur (read-line)))
-    name))
+     name))
 
+(defn- filter-crap [string]
+  (if (> (count string) 20)
+    (subs string 20)
+    string
+  ))
 (defn- mire-handle-client [in out]
   (binding [*in* (io/reader in)
             *out* (io/writer out)
@@ -28,8 +34,8 @@
 
     ;; We have to nest this in another binding call instead of using
     ;; the one above so *in* and *out* will be bound to the socket
-    (print "\nWhat is your name? ") (flush)
-    (binding [player/*name* (get-unique-player-name (read-line))
+    (print "\nWhat is your name?") (flush)
+    (binding [player/*name* (filter-crap (get-unique-player-name (read-line)))
               player/*current-room* (ref (@rooms/rooms :start))
               player/*inventory* (ref #{})]
       (dosync

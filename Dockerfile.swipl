@@ -1,0 +1,3 @@
+FROM swipl
+COPY bot.pl .
+CMD ["swipl", "bot.pl"]
