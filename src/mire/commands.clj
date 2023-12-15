@@ -11,6 +11,13 @@
 
 ;; Command functions
 
+(defn stats
+  "See your stats"
+  []
+  (str "\nStrength: " player/*strength*
+  (str "\nIntelligence: " player/*intelligence*
+  (str "\nPerception: " player/*perception*)))) ;;ueeeeeeee
+
 (defn look
   "Get a description of the surrounding environs and its contents, including player names."
   []
@@ -132,6 +139,7 @@
                "detect" detect
                "look" look
                "say" say
+               "stats" stats
                "yell" yell
                "help" help
                "whisper" whisper})

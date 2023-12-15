@@ -22,6 +22,27 @@
         (recur (read-line)))
      name))
 
+(defn- get-strength [strength]
+  (if (>(+ (Integer/parseInt strength) player/*intelligence* player/*perception*) 10)
+    (do (print "\nSum of stats > 10. Input a lower number: ")
+      (flush)
+      (recur (read-line)))
+    strength)) ;;ueeee
+
+(defn- get-intelligence [intelligence]
+  (if (>(+ (Integer/parseInt intelligence) player/*strength* player/*perception*) 10)
+    (do (print "\nSum of stats > 10. Input a lower number or 0: ")
+      (flush)
+      (recur (read-line)))
+    intelligence)) ;;ueeeee
+
+(defn- get-perception [perception]
+  (if (>(+ (Integer/parseInt perception) player/*intelligence* player/*strength*) 10)
+    (do (print "\nSum of stats > 10. Input a lower number or 0: ")
+      (flush)
+      (recur (read-line)))
+    perception)) ;;ueeeeeeee
+
 (defn- filter-crap [string]
   (if (> (count string) 20)
     (subs string 20)
@@ -30,7 +51,10 @@
 (defn- mire-handle-client [in out]
   (binding [*in* (io/reader in)
             *out* (io/writer out)
-            *err* (io/writer System/err)]
+            *err* (io/writer System/err)
+            player/*strength* 0
+            player/*intelligence* 0
+            player/*perception* 0]
 
     ;; We have to nest this in another binding call instead of using
     ;; the one above so *in* and *out* will be bound to the socket
@@ -46,6 +70,21 @@
 
       (print "Write the description about you: ") (flush)
       (binding [player/*description* (read-line)])
+      (print "\nWhat is your strength? Input number from 0 to 10: ") (flush)
+      (binding [player/*strength* (Integer/parseInt (try (get-strength (read-line))
+                                                      (catch Exception e
+                                                      (.printStackTrace e (new java.io.PrintWriter *err*))
+                                                      "Input can only be an integer in range [1,10]")))] ;;ueeee
+        (print "\nWhat is your intelligence? Input number from 0 to 10: ") (flush)
+        (binding [player/*intelligence* (Integer/parseInt (try (get-intelligence (read-line))
+                                                          (catch Exception e
+                                                          (.printStackTrace e (new java.io.PrintWriter *err*))
+                                                          "Input can only be an integer in range [1,10]")))] ;;ueeee
+          (print "\nWhat is your perception? Input number from 0 to 10: ") (flush)
+          (binding [player/*perception* (Integer/parseInt (try (get-perception (read-line))
+                                                          (catch Exception e
+                                                          (.printStackTrace e (new java.io.PrintWriter *err*))
+                                                          "Input can only be an integer in range [1,10]")))] ;;ueeeeeee
 
       (println (commands/look)) (print player/prompt) (flush)
 
@@ -55,7 +94,7 @@
                (.flush *err*)
                (print player/prompt) (flush)
                (recur (read-line))))
-           (finally (cleanup))))))
+           (finally (cleanup)))))))))
 
 (defn -main
   ([port dir]
