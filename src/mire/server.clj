@@ -31,14 +31,14 @@
 
 (defn- get-intelligence [intelligence]
   (if (>(+ (Integer/parseInt intelligence) player/*strength* player/*perception*) 10)
-    (do (print "\nSum of stats > 10. Input a lower number: ")
+    (do (print "\nSum of stats > 10. Input a lower number or 0: ")
       (flush)
       (recur (read-line)))
     intelligence)) ;;ueeeee
 
 (defn- get-perception [perception]
   (if (>(+ (Integer/parseInt perception) player/*intelligence* player/*strength*) 10)
-    (do (print "\nSum of stats > 10. Input a lower number: ")
+    (do (print "\nSum of stats > 10. Input a lower number or 0: ")
       (flush)
       (recur (read-line)))
     perception)) ;;ueeeeeeee
@@ -70,12 +70,21 @@
 
       (print "Write the description about you: ") (flush)
       (binding [player/*description* (read-line)])
-      (print "\nWhat is your strength? Input number from 1 to 10: ") (flush)
-      (binding [player/*strength* (Integer/parseInt (get-strength (read-line)))] ;;ueeee
-        (print "\nWhat is your intelligence? Input number from 1 to 10: ") (flush)
-        (binding [player/*intelligence* (Integer/parseInt (get-intelligence (read-line)))] ;;ueeee
-          (print "\nWhat is your perception? Input number from 1 to 10: ") (flush)
-          (binding [player/*perception* (Integer/parseInt (get-perception (read-line)))] ;;ueeeeeee
+      (print "\nWhat is your strength? Input number from 0 to 10: ") (flush)
+      (binding [player/*strength* (Integer/parseInt (try (get-strength (read-line))
+                                                      (catch Exception e
+                                                      (.printStackTrace e (new java.io.PrintWriter *err*))
+                                                      "Input can only be an integer in range [1,10]")))] ;;ueeee
+        (print "\nWhat is your intelligence? Input number from 0 to 10: ") (flush)
+        (binding [player/*intelligence* (Integer/parseInt (try (get-intelligence (read-line))
+                                                          (catch Exception e
+                                                          (.printStackTrace e (new java.io.PrintWriter *err*))
+                                                          "Input can only be an integer in range [1,10]")))] ;;ueeee
+          (print "\nWhat is your perception? Input number from 0 to 10: ") (flush)
+          (binding [player/*perception* (Integer/parseInt (try (get-perception (read-line))
+                                                          (catch Exception e
+                                                          (.printStackTrace e (new java.io.PrintWriter *err*))
+                                                          "Input can only be an integer in range [1,10]")))] ;;ueeeeeee
 
       (println (commands/look)) (print player/prompt) (flush)
 
