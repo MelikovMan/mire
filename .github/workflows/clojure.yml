@@ -22,7 +22,7 @@ jobs:
     - name: Lint
       run: clj-kondo --lint "$(lein classpath)" --dependencies --parallel --copy-configs --config '{:output {:pattern "::{{level}} file={{filename}},line={{row}},col={{col}}::{{message}}"}}'
     - name: lint sourcers
-      run: clj-kondo --lint src resources test --config '{:output {:pattern "::{{level}} file={{filename}},line={{row}},col={{col}}::{{message}}"}}' --fail-level error
+      run: clj-kondo --lint src resources test --dependencies --parallel --config '{:output {:pattern "::{{level}} file={{filename}},line={{row}},col={{col}}::{{message}}"}}' --fail-level error
 
     
   build:
