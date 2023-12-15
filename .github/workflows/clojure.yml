@@ -22,7 +22,7 @@ jobs:
       run: lein deps
 
     - name: Lint
-      run: clj-kondo --lint src test resources --config '{:output {:pattern "::{{level}} file={{filename}},line={{row}},col={{col}}::{{message}}"}}'
+      run: clj-kondo --lint "$(lein classpath)" --dependencies --parallel --copy-configs --config '{:output {:pattern "::{{level}} file={{filename}},line={{row}},col={{col}}::{{message}}"}}'
 
     
   build:
