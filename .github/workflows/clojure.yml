@@ -19,7 +19,7 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: Lint
-      run: clj-kondo --lint src --config '{:output {:pattern "::{{level}} file={{filename}},line={{row}},col={{col}}::{{message}}"}}'
+      run: clj-kondo --lint src test resources --config '{:output {:pattern "::{{level}} file={{filename}},line={{row}},col={{col}}::{{message}}"}}'
 
     
   build:
