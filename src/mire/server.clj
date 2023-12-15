@@ -44,6 +44,9 @@
        (commute (:inhabitants @player/*current-room*) conj player/*name*)
        (commute player/streams assoc player/*name* *out*))
 
+      (print "Write the description about you: ") (flush)
+      (binding [player/*description* (read-line)])
+
       (println (commands/look)) (print player/prompt) (flush)
 
       (try (loop [input (read-line)]
